@@ -142,6 +142,9 @@ Oracle : DESCRIBE 테이블명;
 SQL server : exec sp_help 'dbo.테이블명'
 #### [다. 제약조건(CONSTRAINT)]
 ![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_166.jpg)
+DESC(RIBE) 테이블명; -> 테이블 구조 확인(Oracle)  
+exec sp_help ‘db0.테이블명’ -> (SQL Server)  
+go
 #### NULL의미
 정의되지 않은 미지의 값, 현재 데이터를 입력하지 못하는 경우
 #### DEFAULT의미
@@ -269,4 +272,19 @@ TRUNCATE TABLE PLAYER;
 ```
 [예제] SQL Server TRUNCATE TABLE TEAM; 명령이 완료되었다.
 ```
+## 테이블 구조 변경 DDL 정리
+ALTER TABLE 테이블명  
+ADD 칼럼명 데이터 유형;  
+DROP COLUMN 칼럼명;  
+MODIFY (칼럼명 데이터유형 DEFAULT식 NOT NULL); -> 칼럼 데이터 유형, 조건 등 변경 Oracle   
+ALTER (칼럼명 데이터유형 DEFAULT식 NOT NULL); -> SQL Server  
+RENAME COLUMN 변경전칼럼명 TO 뉴칼럼명; Ora  
+sp_rename 변경전칼럼명, 뉴칼럼명, ‘COLUMN’; SQ   
+DROP CONSTRAINT 조건명; 제약조건 삭제  
+ADD CONSTRAINT 조건명 조건 (칼럼명); 조건 추가  
+RENAME 변경전테이블명 TO 변경후테이블명; Ora  
+sp_rename ‘db0.TEAM’,‘TEAM_BACKUP’; SQL  
+DROP TABLE 테이블명 [CASCADE CONSTRAINT]  
+CASCADE CONSTRAINT : 참조되는 제약조건 삭제  
+TRUNCATE TABLE 테이블명: 행 제거, 저장공간 재사용
 
