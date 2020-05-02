@@ -1,7 +1,9 @@
 # 2-1. SQL 기본 및 활용 - SQL기본
 ## DML 
-DDL : 테이블을 생성하고 생성된 테이블의 구조를 변경하는 명령어.
-DML : 만들어진 테이블에 관리하기를 원하는 자료들을 입력, 수정, 삭제 조회하는 명령어.(SELECT-INSERT-UPDATE-DELETE), 실시간으로 테이블에 영향을 미치지 않음.
+DDL : 테이블을 생성하고 생성된 테이블의 구조를 변경하는 명령어.  
+DML : 만들어진 테이블에 관리하기를 원하는 자료들을 입력, 수정, 삭제 조회하는 명령어.(SELECT-INSERT-UPDATE-DELETE), 실시간으로 테이블에 영향을 미치지 않음.  
+★ DDL 명령어의 경우 실행시 AUTO COMMIT 하지만 DML의 경우 COMMIT을 입력해야 한다.
+SQL Server의 경우 DML도 AUTO COMMIT
 ### 1. INSERT
 INSERT : 데이터 입력 명령어
 ```
@@ -13,7 +15,7 @@ INSERT : 데이터 입력 명령어
 ```
 [예제] ▶ 테이블명 : PLAYER INSERT INTO PLAYER (PLAYER_ID, PLAYER_NAME, TEAM_ID, POSITION, HEIGHT, WEIGHT, BACK_NO) VALUES ('2002007', '박지성', 'K07', 'MF', 178, 73, 7); 1개의 행이 만들어졌다.
 ```
-![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_167.jpg)
+![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_167.jpg)  
 칼럼 명이 정의되지 않은 경우, NULL로 입력됨.
 ### 2. UPDATE
 UPDATE : 잘못 입력되거나, 변경이 발생하여 정보를 수정해야 하는 경우. 
@@ -55,7 +57,10 @@ DISTINCT : SELECT 와 같은 결과를 출력.
 [예제] SELECT DISTINCT POSITION FROM PLAYER;
 ```
 #### [다.WILDCARD] 
-WILDCARD : 보고싶은 정보들이 있는 칼럼들을 선택하여 조회. 모든 칼럼 정보를 보고 싶은 경우 애스터리스크(*)를 사용하여 조회.
+WILDCARD : 보고싶은 정보들이 있는 칼럼들을 선택하여 조회. 모든 칼럼 정보를 보고 싶은 경우 애스터리스크(*)를 사용하여 조회.  
+- * : 모든
+- % : 모든
+- - : 한 글자
 ```
 SELECT * FROM 테이블명;
 ```
@@ -87,7 +92,7 @@ ALIAS : 조회된 결과에 일종 별명을 부여하여 칼럼 레이블을 �
 ### 5. 산술 연산자와 합성 연산자
 #### [가. 산술 연산자]
 산술 연산자는 NUMBER 과 DATE 자료형에 적용되며, 우선순위를 위한 괄호 적용이 가능. 우선순위를 가짐.
-![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_169.jpg)
+![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_169.jpg)  
 [예제] 선수들의 키에서 몸무게를 뺀 값을 알아본다.
 ```
 [예제] SELECT PLAYER_NAME 이름, HEIGHT - WEIGHT "키-몸무게" FROM PLAYER;
@@ -119,19 +124,20 @@ ALIAS : 조회된 결과에 일종 별명을 부여하여 칼럼 레이블을 �
 ## TCL 
 ### 1. 트랜잭션 개요
 #### [가. 트랜잭션]
-트랜잭션 : 데이터베이스 논리적 연산단위로, 밀접히 관련되어 분리될 수 없는 한개 이상의 데이터베이스 조작. 분할 할 수 없는 최소의 단위.
+트랜잭션 : 데이터베이스 논리적 연산단위로, 밀접히 관련되어 분리될 수 없는 한개 이상의 데이터베이스 조작. 분할 할 수 없는 최소의 단위.  
 트랜잭션의 대상이 되는 SQL문 : UPDATE, INSERT, DELETE 등 데이터를 수정하는 DML문 
 #### TCL ( DML에 의해 조작된 결과를 트랜잭션 별로 제어하는 명령어)
 COMMIT : 올바르게 반영된 데이터를 데이터베이스에 반영.
 ROLLBACK : 트랜잭션 시작 이전의 상태로 되돌리는 것.
 SAVEPOINT : 저장점. 
 #### 트랜잭션 특성 
-![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_170.jpg)
+![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_170.jpg)  
 
-여기서 데이터베이스는 트랜잭션 특성인 원자성을 충족하고자 잠금(LOCKING) 기능을 제공함. 잠금 기능이란 다른 트랜잭션이 동시에 접근하지 못하도록 제한하는 기법을 말함.
+여기서 데이터베이스는 트랜잭션 특성인 원자성을 충족하고자 잠금(LOCKING) 기능을 제공함.  
+잠금 기능이란 다른 트랜잭션이 동시에 접근하지 못하도록 제한하는 기법을 말함.
 ### 2. COMMIT
 #### [가. COMMIT ]
-COMMIT :  트랜잭션을 완료하는 명령어. INSERT 문장, UPDATE 문장, DELETE 문장을 사용한 후 이런 변경 작업이  완료되었음을 데이터베이스에 알려주기 위해 사용함
+COMMIT :  트랜잭션을 완료하는 명령어. INSERT 문장, UPDATE 문장, DELETE 문장을 사용한 후 이런 변경 작업이 완료되었음을 데이터베이스에 알려주기 위해 사용함.올바르게 반영된 데이터를 DB에 반영.  
 COMMIT, ROLLBACK 효과 : 데이터 무결성 보장, 영구적인 변경 하기전 테이터 변경사항 확인 가능, 논리적 연관된 작업 그룹 핑하여 처리가능 
 #### COMMIT 특징
 - 단지 메모리 BUFFER에만 영향을 받았기 때문에 데이터의 변경 이전 상태로 복구 가능.
@@ -149,7 +155,7 @@ COMMIT, ROLLBACK 효과 : 데이터 무결성 보장, 영구적인 변경 하기
 - 모든 사용자가 결과를 볼 수 있음
 - 관련 행에 대한 잠금이 풀리고, 다른 사용자들이 행을 조작할 수 있게됨 
 #### [나. SQL server 의 COMMIT]
-SQL Server는 기본적으로 AUTO COMMIT 모드이기 때문에 DML 수행 후 사용자가 COMMIT이나 ROLLBACK을 처리할 필요가 없다.(ORACLE 일 경우 사용자가 수행해야함.)
+SQL Server는 기본적으로 AUTO COMMIT 모드이기 때문에 DML 수행 후 사용자가 COMMIT이나 ROLLBACK을 처리할 필요가 없다.(ORACLE 일 경우 사용자가 수행해야함.)  
  DML 구문이 성공이면 자동으로 COMMIT이 되고 오류가 발생할 경우 자동으로 ROLLBACK 처리된다.
 [예제] PLAYER 테이블에 데이터를 입력한다.
 ```
@@ -169,7 +175,7 @@ SQL Server는 기본적으로 AUTO COMMIT 모드이기 때문에 DML 수행 후 
 - 명시적 트랜잭션 : 트랜잭션 시작과 끝을 모두 사용자가 지정 BEGIN TRANSACTION(BEGIN TRAN)으로 트랜잭션시작
 
 ### 3. ROLLBACK 
-ROLLBACK : 테이블 내 입력한 데이터나, 수정한 데이터, 삭제한 데이터에 대해 COMMIT이전에 변경 사항을 취소 할 수 있는 명령어.잠금이 풀리고 다른 사용자들이 데이터 변경을 할 수 있게 됨.
+ROLLBACK : 테이블 내 입력한 데이터나, 수정한 데이터, 삭제한 데이터에 대해 COMMIT이전에 변경 사항을 취소 할 수 있는 명령어.잠금이 풀리고 다른 사용자들이 데이터 변경을 할 수 있게 됨.트랜잭션 시작 이전의 상태로 되돌림.  
 [예제] PLAYER 테이블에 데이터를 입력하고 ROLLBACK을 실행한다.
 ```
 [예제] Oracle INSERT INTO PLAYER (PLAYER_ID, TEAM_ID, PLAYER_NAME, POSITION, HEIGHT, WEIGHT, BACK_NO) VALUES ('1999035', 'K02', '이운재', 'GK', 182, 82, 1); 1개의 행이 만들어졌다. ROLLBACK; 롤백이 완료되었다.
@@ -253,6 +259,13 @@ ROLLBACK TRANSACTION SVTR1;
 2. 변경되는 데이터의 무결성을 보장
 - 커밋(COMMIT) : 반영 
 - 롤백(ROLLBACK) : 복귀
+```
+SAVEPOINT SVPT1; (Oracle)
+ROLLBACK TO SVPT1; (Oracle)
+SAVE TRAN SVPT1; (SQL Server)
+ROLLBACK TRAN SVPT1; (SQL Server)
+COMMIT;
+```
 3. 저장점 (SAVEPOINT/SAVE TRANSACTION)
 데이터 변경을 사전에 지정한 저장점 까지 롤백하라 
 Oracle : 트랜잭션 대상이 되는 SQL 문장 실행시 자동으로 시작됨. 
@@ -262,5 +275,5 @@ SQL : 자동으로 시작되고, COMMIT/ROLLBACK 실생 지점에서 종료된�
 -   DML 문장 이후에 커밋 없이 DDL 문장이 실행되면 DDL 수행 전에 자동으로 커밋된다. 
 - 데이터베이스를 정상적으로 접속을 종료하면 자동으로 트랜잭션이 커밋된다. 
 - 애플리케이션의 이상 종료로 데이터베이스와의 접속이 단절되었을 때는 트랜잭션이 자동으로 롤백된다.
-5, SQL 트랜잭션이 자동으로 종료되는 경우(원래는 AUTO COMMIT 이 기본)
+5. SQL 트랜잭션이 자동으로 종료되는 경우(원래는 AUTO COMMIT 이 기본)
 - 애플리케이션의 이상 종료로 데이터베이스(인스턴스)와의 접속이 단절되었을 때는 트랜잭션이 자동으로 롤백된다.
