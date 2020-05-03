@@ -15,6 +15,15 @@ SELECT [DISTINCT/ALL] 칼럼명 [ALIAS명] FROM 테이블명 WHERE 조건식;
 ![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_172.jpg)
 #### [나. 연산자의 우선순위]
 ![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_173.jpg)
+```
+SELECT PLAYER_NAME 선수명   
+FROM PLAYER  
+WHERE TEAM_ID = ‘K2’; -> 팀ID가 K2인 사람   
+WHERE TEAM_ID IN (‘K2’,‘K7’); -> K2,K7인 사람  
+WHERE HEIGHT BETWEEN 170 AND 180;  
+-> 키가 170 ~ 180인 사람  
+WHERE POSITION IS NULL; -> 포지션 없는 사람
+```
 ### 3. 비교 연산자
 #### [가. 비교연산자 종류]
 ![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_174.jpg)
