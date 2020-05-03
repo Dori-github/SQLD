@@ -22,7 +22,7 @@ WHERE TEAM_ID = ‘K2’; -> 팀ID가 K2인 사람
 WHERE TEAM_ID IN (‘K2’,‘K7’); -> K2,K7인 사람  
 WHERE HEIGHT BETWEEN 170 AND 180;  
 -> 키가 170 ~ 180인 사람  
-WHERE POSITION IS NULL; -> 포지션 없는 사람
+WHERE POSITION IS NULL; -> 포지션 없는 사람.
 ```
 ### 3. 비교 연산자
 #### [가. 비교연산자 종류]
