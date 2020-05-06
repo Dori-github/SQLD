@@ -56,7 +56,7 @@ SELECT 절 만으로도 SQL 문장 수행 가능 . 그러나 사용자 테이블
 #### [가. 단일행 숫자형 함수 종류]
 ![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_184.jpg)
 #### [나. 단일행 숫자형 함수 사례]
-![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_185.jpg)
+![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_185.jpg)  
 [예제] 정수 기준으로 반올림 및 올림하여 출력한다.
 ```
 [예제] SQL Server SELECT ENAME, ROUND(SAL/12), CEILING(SAL/12) FROM EMP;
@@ -69,7 +69,7 @@ SELECT 절 만으로도 SQL 문장 수행 가능 . 그러나 사용자 테이블
 #### [가. 단일행 날짜형 함수 종류]
 ![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_186.jpg)
 #### [나. 단일행 날짜형 데이터 연산]
-![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_187.jpg)
+![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_187.jpg)  
 [예제] Oracle의 SYSDATE 함수와 SQL Server의 GETDATE( ) 함수를 사용하여 데이터베이스에서 사용하는 현재의 날짜 데이터를 확인한다. 날짜 데이터는 시스템 구성에 따라 다양하게 표현될 수 있으므로 사용자마다 다른 결과가 나올 수 있다.
 ```
 [예제 및 실행 결과] Oracle SELECT SYSDATE FROM DUAL; SYSDATE -------- 12/07/18
@@ -80,10 +80,10 @@ SELECT 절 만으로도 SQL 문장 수행 가능 . 그러나 사용자 테이블
 ### 5. 변환형 함수 
 변환형 함수 : 특정 데이터 타입을 다양한 형식으로 출력하고 싶을 때 사용되는 함수
 #### [가. 데이터 유형 변환의 종류]
-![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_188.jpg)
+![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_188.jpg)  
 암시적 데이터 유형 변환의 경우 성능 저하가 발생 할 수 읶음. 그러므로 명시적 데이터 유형 변환 방법을 사용 하는 것이 바람직함.
 #### [나. 단일행 변환형 함수의 종류]
-![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_189.jpg)
+![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_189.jpg)  
 [예제] 날짜를 정해진 문자 형태로 변형한다.
 ```
 [예제 및 실행 결과] Oracle SELECT TO_CHAR(SYSDATE, 'YYYY/MM/DD') 날짜, TO_CHAR(SYSDATE, 'YYYY. MON, DAY') 문자형 FROM DUAL; 날자 문자형 --------- ---------------- 2012-07-19 2012. 7월 , 월요일
@@ -115,9 +115,10 @@ ex)COALESCE(NULL,NULL,‘abc’) -> ‘abc’
 표현식1값이 NULL이면 표현식2값 출력한다. --- NVL(NULL판단대상,‘NULL일 때 대체값’)
 2) NULLIF(표현식1,표현식2) 
 표현식1값이 표현식2와 같으면 NULL, 같지 않으면 표현식1값 출력한다 
-3) COALESCE(표현식1, 표현식2, ...)
+3) COALESCE(표현식1, 표현식2, ...)  
  임의의 개수 표현식에서 NULL이 아닌 최초의 표현식을 나타낸다. 모든 표현식이 NULL이라면 
- NULL값 리턴 (NULL과 관련된 함수가 아닌 것? 1.ISNULL 2.NULLIF 3.COALESCE 4.IS NOT NULL) ※ IS NULL, IS NOT NULL은 함수가 아니라 연산자이다.
+ NULL값 리턴 (NULL과 관련된 함수가 아닌 것? 1.ISNULL 2.NULLIF 3.COALESCE 4.IS NOT NULL)  
+ ※ IS NULL, IS NOT NULL은 함수가 아니라 연산자이다.
 #### 예제 
 Oracle의 경우 NVL 함수를 사용한다.
 ```
@@ -178,7 +179,7 @@ COALESCE (EXPR1, EXPR2, …)
  - DISTINCT : 같은 값을 하나의 데이터로 간주할 때 사용하는 옵션임
 ```
 #### [가. 집계함수의 종류]
-![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_193.jpg)
+![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_193.jpg)  
 [예제] 일반적으로 집계 함수는 GROUP BY 절과 같이 사용되지만 아래와 같이 테이블 전체가 하나의 그룹이 되는 경우에는 GROUP BY 절 없이 단독으로도 사용 가능하다.
 ```
 [예제] SELECT COUNT(*) "전체 행수", COUNT(HEIGHT) "키 건수", MAX(HEIGHT) 최대키, MIN(HEIGHT) 최소키, ROUND(AVG(HEIGHT),2) 평균키 FROM PLAYER;
@@ -195,11 +196,12 @@ SELECT [DISTINCT] 칼럼명 [ALIAS명] FROM 테이블명 [WHERE 조건식] [GROU
 - GROUP BY 절을 통해 소그룹별 기준을 정한 후, SELECT 절에 집계 함수를 사용한다. 
 - 집계 함수의 통계 정보는 NULL 값을 가진 행을 제외하고 수행한다. 
 - GROUP BY 절에서는 SELECT 절과는 달리 ALIAS 명을 사용할 수 없다. 
-- 집계 함수는 WHERE 절에는 올 수 없다. (집계 함수를 사용할 수 있는 GROUP BY 절보다 WHERE 절이 먼저 수행된다) - WHERE 절은 전체 데이터를 GROUP으로 나누기 전에 행들을 미리 제거시킨다. 
+- 집계 함수는 WHERE 절에는 올 수 없다. (집계 함수를 사용할 수 있는 GROUP BY 절보다 WHERE 절이 먼저 수행된다) 
+- WHERE 절은 전체 데이터를 GROUP으로 나누기 전에 행들을 미리 제거시킨다. 
 - HAVING 절은 GROUP BY 절의 기준 항목이나 소그룹의 집계 함수를 이용한 조건을 표시할 수 있다. 
 - GROUP BY 절에 의한 소그룹별로 만들어진 집계 데이터 중, HAVING 절에서 제한 조건을 두어 조건을 만족하는 내용만 출력한다. 
-- HAVING 절은 일반적으로 GROUP BY 절 뒤에 위치한다
-※ ORDER BY 절을 SELECT 절에 정의되지 않은 컬럼 사용 가능
+- HAVING 절은 일반적으로 GROUP BY 절 뒤에 위치한다.  
+※ ORDER BY 절을 SELECT 절에 정의되지 않은 칼럼 사용 가능
 ```
 SEARCHED_CASE_EXPRESSION
 CASE WHEN LOC = ‘a’ THEN ‘b’
@@ -218,12 +220,12 @@ CASE LOC WHEN ‘a’ THEN ‘b’
 [실행 결과] 포지션 인원수 키대상 최대키 43 43 196 174 186.26 DF 172 142 190 170 180.21 FW 100 100 194 168 179.91 MF 162 162 189 165 176.31 5개의 행이 선택되었다.
 ```
 #### Order by 특징 
-기본적인 정렬순서는 오름차순 (ASC)이다. cf. 내림차순(DESC) 
+기본적인 정렬순서는 오름차순 (ASC)이다. cf. 내림차순(DESC)   
 숫자 오름차순 - 가장 작은 값부터 출력 
-날짜 오름차순 - 가장 날짜값 빠른 값이 먼저 출력
-Oracle - NULL 가장 큰 값으로 간주. 오름차순 -> 가장 마지막. 내림차순 -> 가장 먼저 
-SQL Server -NULL 가장 작은 값. 오름차순 -> 가장 먼저, 내림차순 -> 가장 마지막 위치 
-ORDER BY 절에서는 칼럼명, ALIAS명, 칼럼순서 같이 혼용해서 사용 가능
+날짜 오름차순 - 가장 날짜값 빠른 값이 먼저 출력  
+Oracle - NULL 가장 큰 값으로 간주. 오름차순 -> 가장 마지막. 내림차순 -> 가장 먼저   
+SQL Server -NULL 가장 작은 값. 오름차순 -> 가장 먼저, 내림차순 -> 가장 마지막 위치   
+ORDER BY 절에서는 칼럼명, ALIAS명, 칼럼순서 같이 혼용해서 사용 가능  
 
 ※ Oracle에서는 NULL을 가장 큰 값으로 취급하며 SQL Server에서는 NULL을 가장 작은 값으로 취급한다.
 
@@ -236,8 +238,8 @@ ORDER BY 절에서는 칼럼명, ALIAS명, 칼럼순서 같이 혼용해서 사�
 ```
 [예제] 포지션 평균키 ------ ------ GK 186.26 DF 180.21 2개의 행이 선택되었다.
 ```
-GROUP BY 소그룹의 데이터 중 일부만 필요한 경우, 
-1. GROUP BY 연산 전 WHERE 절에서 조건을 적용하여 필요한 데이터만 추출하여 GROUP BY 연산을 하는 방법
+GROUP BY 소그룹의 데이터 중 일부만 필요한 경우,  
+1. GROUP BY 연산 전 WHERE 절에서 조건을 적용하여 필요한 데이터만 추출하여 GROUP BY 연산을 하는 방법  
 2. GROUP BY 연산 후 HAVING 절에서 필요한 데이터만 필터링 하는 두 가지 방법
 ### 4. CASE 표현을 활용한 월별 데이터 집계
 1. 개별 데이터 확인 
