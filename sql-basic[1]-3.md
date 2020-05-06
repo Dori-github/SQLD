@@ -175,3 +175,13 @@ TOP (Expression) [PERCENT] [WITH TIES]
 - SELECT TOP(1) PLAYER_NAME FROM PLAYER;
 #### 두건의 이상 N행
 - SELECT TOP(N) PLAYER_NAME FROM PLAYER;
+
+## TRUNCATE와 DELETE의 차이
+DDL인 TRUNCATE는 명령어 입력 순간 해당하는 작업이 즉시(AUTO COMMIT) 완료.  
+DML(INSERT, UPDATE, DELETE, SELECT) 명령어의 경우, 실시간으로 테이블에 영향을 미치지 않고, COMMIT 명령어를 입력해야 처리됨.   
+테이블의 전체 데이터를 삭제하는 경우, 시스템 활용 측면에서는 삭제된 데이터를 로그로 저장하는 DELETE TABLE 보다는 시스템 부하가 적은 TRUNCATE TABLE을 권고한다. 단, TRUNCATE TABLE의 경우 삭제된 데이터의 로그가 없으므로 ROLLBACK이 불가능하므로 주의해야 한다.
+
+## DROP VS TRUNCATE VS DELETE 
+DROP : 스키마제거/로그X
+TRUNCTATE :  스키마유지/로그X
+DELETE : 스키마유지/로그O 
