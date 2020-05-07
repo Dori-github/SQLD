@@ -17,7 +17,10 @@ SELECT 칼럼명 [ALIAS명] FROM 테이블명 [WHERE 조건식] [GROUP BY 칼럼
 - 숫자형 데이터 타입은 오름차순으로 정렬했을 때 가장 작은 값부터 출력된다.
 - 날짜형 데이터 타입은 오름차순으로 정렬 했을 경우 날짜 값이 가장 빠른 값이 먼저 출력된다.
 - Oracle 에서는 null 값을 가장 큰 값으로 간주하여 오름차순으로 정렬했을 경우에는 가장 마지막에, 내림차순으로 정렬했을 경우에는 가장 먼저 위치한다.
-- 반면 SQL server 에서는  null값을 가장 작은 값으로 간주하여 오름차순으로 정렬 했을 경우, 가장먼저 내림차순으로 정렬 했을 경우, 마지막에 위치한다.
+- 반면 SQL server 에서는  null값을 가장 작은 값으로 간주하여 오름차순으로 정렬 했을 경우, 가장먼저 내림차순으로 정렬 했을 경우, 마지막에 위치한다.  
+
+Oracle에서는 NULL을 가장 큰 값으로 취급하며 SQL Server에서는 NULL을 가장 작은 값으로 취급한다.
+
 ### 2.  SELECT 문장 실행 순서
 #### SELECT 수행단계
 1. FROM 테이블명
@@ -70,9 +73,16 @@ TOP (Expression) [PERCENT] [WITH TIES]
 ```
 [실행 결과] ENAME SAL ----- --- KING 5000 SCOTT 3000 FORD 3000 3개의 행이 선택되었다.
 ```
+ 급여가 높은 2명을 내림차순으로 출력하는데 같은 급여를 받는 사원은 같이 출력한다(WITH TIES)
+```
+SELECT TOP(2) WITH TIES ENAME, SAL
+FROM EMP
+ORDER BY SAL DESC;
+```
+
 ## 조인(JOIN)
 ### 1. JOIN
-JOIN : 두 개 이상의 테이블과 연결 또는 결합하여 필요한 데이터를 출력하는 것, 단 두개의 집합 간에만 조인이 일어남.
+JOIN : 두 개 이상의 테이블과 연결 또는 결합하여 필요한 데이터를 출력하는 것, 단 두개의 집합 간에만 조인이 일어남. 5가지 테이블을 JOIN 하기 위해서는 최소 4번의 JOIN 과정이 필요하다. (N-1)  
 JOIN 을 이용하여 데이터를 검색하는 과정 : 선수라는 테이블과 팀이라는 테이블이 있을 경우, 선수 테이블을 기준으로 필요한 데이터를 검색하고 이 데이터와 연관된 팀 테이블의 특정 행을 찾아오는 과정.
 ![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_194.jpg)
 ### 2. EQUI JOIN
@@ -81,13 +91,18 @@ JOIN 조건은 WHERE 절에  "=" 연산을 사용해서 표현
 ```
 SELECT 테이블1.칼럼명, 테이블2.칼럼명, ... FROM 테이블1, 테이블2 WHERE 테이블1.칼럼명1 = 테이블2.칼럼명2; → WHERE 절에 JOIN 조건을 넣는다.
 ```
+SQL처럼 컬럼명 앞에 테이블 명을 기술해줘야 함
+```
+SELECT PLAYER.PLAYER_NAME
+FROM PLAYER
+```
 #### [가. 선수-팀 EQUI JOIN 사례 ]
-![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_195.jpg)
+![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_195.jpg)  
 
 선수(PLAYER) 테이블에 있는 소속팀코드(TEAM_ID) 칼럼이 팀(TEAM) 테이블의 팀코드(TEAM_ID)와 PK(팀 테이블의 팀코드)와 FK(선수 테이블의 소속팀 코드)의 관계. 
 
 선수들과 선수들이 소속해 있는 팀명 및 연고지를 알아보기 위해서 선수 테이블의 소속팀코드를 기준으로 팀 테이블에 들어 있는 데이터를 다음과 같이 순서를 바꾸어야함.
-![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_196.jpg)
+![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_196.jpg)  
 [그림 Ⅱ-1-14]의 실바 선수를 예로 들면 백넘버는 45번이고, 소속팀코드는 K07번이다. K07번 팀코드의 팀명은 드래곤즈이고 연고지는 전남이라는 결과를 얻을 수 있게 된다.
 
 [예제] [그림 Ⅱ-1-14]의 데이터를 출력하기 위한 SELECT SQL 문장을 작성한다.
@@ -115,8 +130,8 @@ EQUI JOIN의 최소한의 연관 관계를 위해서 테이블 개수 - 1개의 
 [실행 결과] 선수명 백넘버 연고지 팀명 ------- ---- ----- ---- 최종문 1 전남 드래곤즈 정병지 1 포항 스틸러스 박유석 1 부산 아이파크 김승준 1 대전 시티즌 이현 1 인천 유나이티드 김운재 1 수원 삼성블루윙즈 정해운 1 성남 일화천마 권정혁 1 울산 울산현대 최동석 1 서울 FC서울 김창민 1 전북 현대모터스 김용발 18 전북 현대모터스 한동진 21 인천 유나이티드 이은성 21 대전 시티즌 김준호 21 포항 스틸러스 조범철 21 수원 삼성블루윙즈 백민철 21 서울 FC서울 권찬수 21 성남 일화천마 서동명 21 울산 울산현대 강성일 30 대전 시티즌 김대희 31 포항 스틸러스 남현우 31 인천 유나이티드 정지혁 31 부산 아이파크 양영민 31 성남 일화천마 염동균 31 전남 드래곤즈 이무림 31 울산 울산현대 최관민 31 전북 현대모터스 최호진 31 수원 삼성블루윙즈 우태식 31 서울 FC서울 김정래 33 전남 드래곤즈 최창주 40 울산 울산현대 정용대 40 부산 아이파크 정경진 41 부산 아이파크 정광수 41 수원 삼성블루윙즈 정경두 41 성남 일화천마 허인무 41 포항 스틸러스 정영광 41 전남 드래곤즈 조의손 44 서울 FC서울 정이섭 45 전북 현대모터스 양지원 45 울산 울산현대 선원길 46 강원 강원FC 최주호 51 포항 스틸러스 최동우 60 전북 현대모터스 김충호 60 인천 유나이티드 43개 항이 선택되었다.
 ```
 JOIN 조건 기술 시 WHERE 절과 SELECT 절에는 테이블 명이 아닌 테이블에 대한 ALIAS 를 사용해야한다. 
-#### [다. 팀-구장 EQUI JOIN  사례]
-![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_197.jpg)
+#### [다. 팀-운동장 EQUI JOIN  사례]
+![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_197.jpg)  
 [예제] 이번에는 [그림 Ⅱ-1-15]에 나와 있는 팀(TEAM) 테이블과 구장(STADIUM) 테이블의 관계를 이용해서 소속팀이 가지고 있는 전용구장의 정보를 팀의 정보와 함께 출력하는 SQL문을 작성한다.
 ```
 [예제] SELECT TEAM.REGION_NAME, TEAM.TEAM_NAME, TEAM.STADIUM_ID, STADIUM.STADIUM_NAME, STADIUM.SEAT_COUNT FROM TEAM, STADIUM WHERE TEAM.STADIUM_ID = STADIUM.STADIUM_ID; 또는 INNER JOIN을 명시하여 사용할 수도 있다. SELECT TEAM.REGION_NAME, TEAM.TEAM_NAME, TEAM.STADIUM_ID, STADIUM.STADIUM_NAME, STADIUM.SEAT_COUNT FROM TEAM INNER JOIN STADIUM ON TEAM.STADIUM_ID = STADIUM.STADIUM_ID; 위 SQL문과 ALIAS를 사용한 아래 SQL문은 같은 결과를 얻을 수 있다. SELECT T.REGION_NAME, T.TEAM_NAME, T.STADIUM_ID, S.STADIUM_NAME, S.SEAT_COUNT FROM TEAM T, STADIUM S WHERE T.STADIUM_ID = S.STADIUM_ID; 또는 INNER JOIN을 명시하여 사용할 수도 있다. SELECT T.REGION_NAME, T.TEAM_NAME, T.STADIUM_ID, S.STADIUM_NAME, S.SEAT_COUNT FROM TEAM T INNER JOIN STADIUM S ON T.STADIUM_ID = S.STADIUM_ID; 중복이 되지 않는 칼럼의 경우 ALIAS를 사용하지 않아도 되므로, 아래 SQL 문은 위 SQL문과 같은 결과를 얻을 수 있다. 그러나 같은 이름을 가진 중복 칼럼의 경우는 테이블명이나 ALIAS가 필수 조건이다. SELECT REGION_NAME, TEAM_NAME, T.STADIUM_ID, STADIUM_NAME, SEAT_COUNT FROM TEAM T, STADIUM S WHERE T.STADIUM_ID = S.STADIUM_ID;
@@ -133,6 +148,12 @@ NON EQUI JOIN(비등가조인) : 두 개 테이블 간 칼럼 값들이 서로 �
 ```
 SELECT 테이블1.칼럼명, 테이블2.칼럼명, ... FROM 테이블1, 테이블2 WHERE 테이블1.칼럼명1 BETWEEN 테이블2.칼럼명1 AND 테이블2.칼럼명2;
 ```
+```
+SELECT E.ENAME, E.JOB, E.SAL, S.GRADE
+FROM EMP E, SALGRADE S
+WHERE E.SAL BETWEEN S.LOSAL AND S.HSAL;
+```
+위는 E의 SAL의 값을 S의 LOSAL과 HSAL 범위에서 찾는 것이다.
 ### 4. 3개 이상 TABLE JOIN
 ```
 [예제] SELECT P.PLAYER_NAME 선수명, P.POSITION 포지션, T.REGION_NAME 연고지, T.TEAM_NAME 팀명, S.STADIUM_NAME 구장명 FROM PLAYER P, TEAM T, STADIUM S WHERE P.TEAM_ID = T.TEAM_ID AND T.STADIUM_ID = S.STADIUM_ID ORDER BY 선수명; 또는 INNER JOIN을 명시하여 사용할 수도 있다. SELECT P.PLAYER_NAME 선수명, P.POSITION 포지션, T.REGION_NAME 연고지, T.TEAM_NAME 팀명, S.STADIUM_NAME 구장명 FROM PLAYER P INNER JOIN TEAM T ON P.TEAM_ID = T.TEAM_ID INNER JOIN STADIUM S ON T.STADIUM_ID = S.STADIUM_ID ORDER BY 선수명;
