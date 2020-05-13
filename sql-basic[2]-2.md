@@ -31,7 +31,7 @@ Oracle에서는 NULL을 가장 큰 값으로 취급하며 SQL Server에서는 NU
 6. ORDER BY 칼럼(Column)이나 표현식
 ### 3. Top N 쿼리
 #### [가. ROWNUM]
-순위가 높은 N개의 로우를 추출하기 위해 ORDER BY 절과 WHERE 절의 ROWNUM 조건을 같이 사용하는 경우가 있음, BUT 이 두조건으로 원하는 결과x 
+순위가 높은 N개의 로우를 추출하기 위해 ORDER BY 절과 WHERE 절의 ROWNUM 조건을 같이 사용하는 경우가 있음, BUT 이 두조건으로 원하는 결과x.
 
 
 - ROWNUM : WHERE 절에서 행의 개수를 제한하는 목적으로 사용, ORDER BY 절보다 먼저 처리되는 WHERE 절에서 처리됨. 
