@@ -8,25 +8,25 @@
 - WINDOW FUNCTION 같은 새로운 개념의 분석 기능들
 #### [가. 일반 집합 연산자]
 ![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_200.jpg)
-1. UNION 연산은 UNION 기능으로
-→ 수학적 합집합을 제공하기 위해, 교집합의 중복을 없애기 위한 사전 작업.
+1. UNION 연산은 UNION 기능으로  
+→ 수학적 합집합을 제공하기 위해, 교집합의 중복을 없애기 위한 사전 작업.  
 → 공통집합을 중복해서 그대로 보여줌으로 정렬 작업이 일어나지 않음(UNION ALL).
-2. INTERSECTION 연산은 INTERSECT 기능으로
+2. INTERSECTION 연산은 INTERSECT 기능으로  
 →INTERSECTION은 수학의 교집합으로 두 집합의 공통집합을 추출.
-3. DIFFERENCE 연산은 EXPECT 기능으로
+3. DIFFERENCE 연산은 EXPECT 기능으로  
 → DIFFRENCE은 수학의 차집합으로 첫번째 집합에서 두번째 집합과 공통집합을 제외한 부분. 
-4. PRODUCT 연산은 CROSS JOIN 기능으로 구현 
-→ PRODUCT는 CROSS PRODUCT 라고 불리는 곱집합으로, JOIN 이 없는 경우 생길 수 있는 모든 데이터 조합. 
+4. PRODUCT 연산은 CROSS JOIN 기능으로 구현   
+→ PRODUCT는 CROSS PRODUCT 라고 불리는 곱집합으로, JOIN 이 없는 경우 생길 수 있는 모든 데이터 조합.   
 → 양쪽 집합의 M*N 건의 데이터 조합이 발생.
 #### [나. 순수 관계 연산자]
-![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_201.jpg)
-5. SELECT 연산은 WHERE 절로 구현한다.
+![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_201.jpg)  
+5. SELECT 연산은 WHERE 절로 구현한다.  
 → SELECT 연산은 SQL 문장에서 WHERE절의 조건 기능으로 구현.
-6. PROJECT 연산은 SELECT 절로 구현되었다.
+6. PROJECT 연산은 SELECT 절로 구현되었다.  
 → PROJECT 연산은 SQL 문장에서 SELECT 절의 칼럼 선택 기능으로 구현.
-7. JOIN 연산은 다양한 JOIN 기능으로 구현되었다.
+7. JOIN 연산은 다양한 JOIN 기능으로 구현되었다.  
 → JOIN 연산은 WHERE 조건의 INNER JOIN 조건과 하께 FROM 절의 NATURAL JOIN, INEER JOIN, OUTER JOIN, USING 조건절, ON 조건절 등으로 발전. 
-8. DIVIDE 연산은 현재 사용되지 않는다.
+8. DIVIDE 연산은 현재 사용되지 않는다.  
 → DIVIDE  연산은 나눗셈과 비슷한 개념.
 #### 관계형 데이터베이스 과정 
 ```
@@ -54,7 +54,7 @@ INNER JOIN :  내부 JOIN 이라고 하며, JOIN 조건에서는 동일한 값�
 [실행 결과] DEPTNO EMPNO ENAME DNAME ------ ----- ------ --------- 20 7369 SMITH RESEARCH 30 7499 ALLEN SALES 30 7521 WARD SALES 20 7566 JONES RESEARCH 30 7654 MARTIN SALES 30 7698 BLAKE SALES 10 7782 CLARK ACCOUNTING 20 7788 SCOTT RESEARCH 10 7839 KING ACCOUNTING 30 7844 TURNER SALES 20 7876 ADAMS RESEARCH 30 7900 JAMES SALES 20 7902 FORD RESEARCH 10 7934 MILLER ACCOUNTING 14개의 행이 선택되었다.
 ```
 ### 4. NATURAL JOIN
-NATURAL JOIN : 두 테이블간의 동일한 이름을 갖는 모든 칼럼들에 대해 , EQUI(=)JOIN 수행( USING 조건절, ON 조건절, WHERE 절에서 JOIN 조건 정의X , SQL server 지원하지 않는 기능)
+NATURAL JOIN : 두 테이블간의 동일한 이름을 갖는 모든 칼럼들에 대해 , EQUI(=)JOIN 수행( USING 조건절, ON 조건절, WHERE 절에서 JOIN 조건 정의X , SQL server 지원하지 않는 기능)  
 
 [예제] 사원 번호와 사원 이름, 소속부서 코드와 소속부서 이름을 찾아본다.
 ```
@@ -190,7 +190,7 @@ LEFT OUTER JOIN : B-B, C-C, D-NULL, E-NULL (4건) RIGHT OUTER JOIN : NULL-A, B-B
 - SELECT 절 동일 위치에 존재하는 칼럼 데이터 타입이 상호 호환 가능 
 두개의 조건을 만족시키지 못하면, 데이터베이스 오류 반환.
 #### [나. 집합연산자 종류]
-![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_204.jpg)
+![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_204.jpg)  
 #### 일반 집합 연산자
 1. UNION : 합집합(중복 행은 1개로 처리)
 2. UNION ALL : 합집합(중복 행도 표시)
@@ -204,7 +204,7 @@ LEFT OUTER JOIN : B-B, C-C, D-NULL, E-NULL (4건) RIGHT OUTER JOIN : NULL-A, B-B
 4. DIVIDE -> 사용x
 {a,x}{a,y}{a,z} divdie {x,z} = {a}
 #### [다. 집합연산자의 연산 결과]
-![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_205.jpg)
+![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_205.jpg)  
 - R1, R2는 각각 SQL 문을 실행해서 생성된 개별 결과 집합을 의미.
 - UNION ALL을 제외한 다른 집합 연산자에서는 SQL문의 결과 집합에서 먼저 중복된 건을 배제하는 작업을 수행한 후, 집합 연산 적용.
 - UNION 연산의 결과는 {1,2,3,4,5}
