@@ -1,13 +1,13 @@
 # 3-1.SQL 기본 및 활용-SQL활용(1)
 ## 계층형 질의와 셀프조인
 ### 1. 계층형 질의
-계층형 질의 : 테이블에 계층형 데이터가 존재하는 경우 데이터를 조회하기 위해 사용 
-계층형 데이터 : 동일 테이블에 계층적으로 상위와 하위 데이터가 포함된 데이터 (ex 사원테이블-상위사원,하위), 순환관계 데이터 모델로 설계 할 경우 발생(ex 조직,사원,메뉴)
-![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_206.jpg)
+계층형 질의 : 테이블에 계층형 데이터가 존재하는 경우 데이터를 조회하기 위해 사용   
+계층형 데이터 : 동일 테이블에 계층적으로 상위와 하위 데이터가 포함된 데이터 (ex 사원테이블-상위사원,하위), 순환관계 데이터 모델로 설계 할 경우 발생(ex 조직,사원,메뉴)  
+![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_206.jpg)  
 #### [가. Oracle 계층형 질의]
 #### 계층형 질의구문 
 계층형 질의를 지원하기 위해서 계층형 질의 구문 제공
-![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_207.jpg)
+![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_207.jpg)  
 - START WITH절은 계층 구조 전개의 시작 위치를 지정하는 구문. (루트데이터)
 - CONNECT BY절은 다음에 전개될 자식 데이터를 지정하는 구문. 자식 데이터는 CONNECT BY절에 주어진 조건을 만족.
 - PRIOR(조인) : CONNECT BY절에 사용되며, 현재 읽은 칼럼을 지정. 
@@ -17,7 +17,7 @@ PRIOR 자식 = 부모 형태를 사용시 계층구조에서 자식 → 부모 �
  - ORDER SIBLINGS BY : 형제 노드(동일 LEVEL) 사이에서 정렬을 수행.
   - WHERE(필터링) : 모든 전개를 수행한 후에 지정된 조건을 만족하는 데이터만 추출
 #### 계층형 질의에서 사용되는 가상칼럼
-![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_208.jpg)
+![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_208.jpg)  
 다음은 [그림II-2-6]의 (3)샘플 데이터를 계층형 질의 구문을 이용해서 조회한 예시(LPAD 함수 사용)
 ```
 [예제] SELECT LEVEL, LPAD(' ', 4 * (LEVEL-1)) || 사원 사원, 관리자, CONNECT_BY_ISLEAF ISLEAF FROM 사원 START WITH 관리자 IS NULL CONNECT BY PRIOR 사원 = 관리자;
@@ -29,10 +29,10 @@ PRIOR 자식 = 부모 형태를 사용시 계층구조에서 자식 → 부모 �
 2. A의 하위 데이터 B,C는 레벨 2
 3. C의 하위데이터 D,E는 레벨 3 
 4. 리프데이터는 B,D,E
-5. 관리자 → 사원 방향 전개(순방향 전개)
-![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_209.jpg)
+5. 관리자 → 사원 방향 전개(순방향 전개)  
+![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_209.jpg)  
 #### 계층형 질의에서 사용되는 함수
-![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_211.jpg)
+![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_211.jpg)  
 SYS_CONNECT_BY_PATH, CONNECT_BY_ROOT를 사용한 예시. 
 ```
 [예제] SELECT CONNECT_BY_ROOT 사원 루트사원, SYS_CONNECT_BY_PATH(사원, '/') 경로, 사원, 관리자 FROM 사원 START WITH 관리자 IS NULL CONNECT BY PRIOR 사원 = 관리자
@@ -75,7 +75,7 @@ SELECT WORKER.ID 사원번호, WORKER.NAME 사원명, MANAGER.NAME 관리자명 
 ```
 사원이라는 테이블 속에 사원,관리자가 모두 하나의 사원이라는개념으로 입력됨. 이 문제를 셀프조인으로 해결하려면, 
 FROM 절에 사원 테이블을 두번 사용해야함. (상위,차상위 관리자를 같은줄에)
-![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_213.jpg)
+![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_213.jpg)  
 동일 테이블을 다른 테이블인 것처럼 처리하려면 테이블 별칭 사용. (E1-사원,E2-관리자)
 ```
 [예제] SELECT E1.사원, E1.관리자, E2.관리자 차상위_관리자 FROM 사원 E1, 사원 E2 WHERE E1.관리자 = E2.사원 ORDER BY E1.사원;
