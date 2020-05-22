@@ -162,10 +162,21 @@ DROP Procedure [schema_name.]Procedure_name;
 #### DEPT 테이블 구조
 ![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_234.jpg)
 ```
-[예제] Oracle CREATE OR REPLACE Procedure p_DEPT_insert -------------① ( v_DEPTNO in number, v_dname in varchar2, v_loc in varchar2, v_result out varchar2) IS cnt number := 0; BEGIN SELECT COUNT(*) INTO CNT -------------② FROM DEPT WHERE DEPTNO = v_DEPTNO AND ROWNUM = 1; if cnt > 0 then -------------③ v_result := '이미 등록된 부서번호이다'; else INSERT INTO DEPT (DEPTNO, DNAME, LOC) -------------④ VALUES (v_DEPTNO, v_dname, v_loc); COMMIT; -------------⑤ v_result := '입력 완료!!'; end if; EXCEPTION -------------⑥ WHEN OTHERS THEN ROLLBACK; v_result := 'ERROR 발생'; END; /
+[예제] Oracle CREATE OR REPLACE Procedure p_DEPT_insert -------------①  
+( v_DEPTNO in number, v_dname in varchar2, v_loc in varchar2, v_result out varchar2) IS cnt number := 0; BEGIN SELECT COUNT(*) INTO CNT -------------②  
+FROM DEPT WHERE DEPTNO = v_DEPTNO AND ROWNUM = 1; if cnt > 0 then -------------③  
+v_result := '이미 등록된 부서번호이다'; else INSERT INTO DEPT (DEPTNO, DNAME, LOC) -------------④  
+VALUES (v_DEPTNO, v_dname, v_loc); COMMIT; -------------⑤   
+v_result := '입력 완료!!'; end if; EXCEPTION -------------⑥   
+WHEN OTHERS THEN ROLLBACK; v_result := 'ERROR 발생'; END; /
 ```
 ```
-[예제] SQL Server CREATE Procedure dbo.p_DEPT_insert -------------① @v_DEPTNO int, @v_dname varchar(30), @v_loc varchar(30), @v_result varchar(100) OUTPUT AS DECLARE @cnt int SET @cnt = 0 BEGIN SELECT @cnt=COUNT(*) -------------② FROM DEPT WHERE DEPTNO = @v_DEPTNO IF @cnt > 0 -------------③ BEGIN SET @v_result = '이미 등록된 부서번호이다' RETURN END ELSE BEGIN BEGIN TRAN INSERT INTO DEPT (DEPTNO, DNAME, LOC) -------------④ VALUES (@v_DEPTNO, @v_dname, @v_loc) IF @@ERROR<>0 BEGIN ROLLBACK -------------⑥ SET @v_result = 'ERROR 발생' RETURN END ELSE BEGIN COMMIT -------------⑤ SET @v_result = '입력 완료!!' RETURN END END END
+[예제] SQL Server CREATE Procedure dbo.p_DEPT_insert -------------①  
+@v_DEPTNO int, @v_dname varchar(30), @v_loc varchar(30), @v_result varchar(100) OUTPUT AS DECLARE @cnt int SET @cnt = 0 BEGIN SELECT @cnt=COUNT(*) -------------②  
+FROM DEPT WHERE DEPTNO = @v_DEPTNO IF @cnt > 0 -------------③  
+BEGIN SET @v_result = '이미 등록된 부서번호이다' RETURN END ELSE BEGIN BEGIN TRAN INSERT INTO DEPT (DEPTNO, DNAME, LOC) -------------④   VALUES (@v_DEPTNO, @v_dname, @v_loc) IF @@ERROR<>0 BEGIN ROLLBACK -------------⑥  
+SET @v_result = 'ERROR 발생' RETURN END ELSE BEGIN COMMIT -------------⑤  
+SET @v_result = '입력 완료!!' RETURN END END END
 ```
 ① DEPT 테이블에 들어갈 칼럼 값(부서코드, 부서명, 위치)을 입력 받는다. 
 ② 입력 받은 부서코드가 존재하는지 확인한다. 
