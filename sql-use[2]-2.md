@@ -25,7 +25,8 @@ SQL server : 인스턴스에 접속하기 위해 로그인을 생성하며, 인�
 
 [예제] SCOTT 유저에게 유저생성 권한(CREATE USER)을 부여한 후 다시 PJS 유저를 생성한다.  
 ```
-[예제 및 실행 결과] Oracle GRANT CREATE USER TO SCOTT; 권한이 부여되었다. CONN SCOTT/TIGER 연결되었다. CREATE USER PJS IDENTIFIED BY KOREA7; 사용자가 생성되었다.
+[예제 및 실행 결과] Oracle GRANT CREATE USER TO SCOTT; 권한이 부여되었다. 
+CONN SCOTT/TIGER 연결되었다. CREATE USER PJS IDENTIFIED BY KOREA7; 사용자가 생성되었다.
 ```
 유저 생성 전 로그인 생성 (로그인=sa)  
 [예제] sa로 로그인을 한 후 SQL 인증을 사용하는 PJS라는 로그인(패스워드: KOREA7)을 생성해 본다. 로그인 후 최초로 접속할 데이터베이스는 AdventureWorks 데이터베이스로 설정한다.
@@ -192,10 +193,17 @@ DROP Procedure [schema_name.]Procedure_name;
 User Defined Function  : 데이터베이스내에 저장해놓은 명령문 집합을 의미.   
 [예제]에서 사용한 ABS 함수를 만드는데, INPUT 값으로 숫자만 들어온다고 가정한다.
 ```
-[예제] Oracle CREATE OR REPLACE Function UTIL_ABS (v_input in number) ---------------- ① return NUMBER IS v_return number := 0; ---------------- ② BEGIN if v_input < 0 then ---------------- ③ v_return := v_input * -1; else v_return := v_input; end if; RETURN v_return; ---------------- ④ END; /
+[예제] Oracle CREATE OR REPLACE Function UTIL_ABS (v_input in number) ---------------- ①   
+return NUMBER IS v_return number := 0; ----------------②  
+BEGIN if v_input < 0 then ---------------- ③   
+v_return := v_input * -1; else v_return := v_input; end if; RETURN v_return; ---------------- ④   
+END; /
 ```
 ```
-[예제] SQL Server CREATE Function dbo.UTIL_ABS (@v_input int) ---------------- ① RETURNS int AS BEGIN DECLARE @v_return int ---------------- ② SET @v_return=0 IF @v_input < 0 ---------------- ③ SET @v_return = @v_input * -1 ELSE SET @v_return = @v_input RETURN @v_return; ---------------- ④ END
+[예제] SQL Server CREATE Function dbo.UTIL_ABS (@v_input int) ---------------- ①     
+RETURNS int AS BEGIN DECLARE @v_return int ---------------- ② SET @v_return=0 IF @v_input < 0 ---------------- ③   
+SET @v_return = @v_input * -1 ELSE SET @v_return = @v_input RETURN @v_return; ---------------- ④
+END
 ```
 [예제]에서 생성한 UTIL_ABS Function의 처리 과정은 다음과 같다.
 
@@ -206,12 +214,19 @@ Trigger : 특정한 테이블에 INSERT, UPDATE, DELETE와 같은 DML문이 수�
 
 Trigger의 역할은 ORDER_LIST에 주문 정보가 입력되면 주문 정보의 주문 일자(ORDER_LIST.ORDER_DATE)와 주문 상품(ORDER_LIST.PRODUCT)을 기준으로 판매 집계 테이블(SALES_PER_DATE)에 해당 주문 일자의 주문 상품 레코드가 존재하면 판매 수량과 판매 금액을 더하고 존재하지 않으면 새로운 레코드를 입력한다.
 ```
-[예제] Oracle CREATE OR REPLACE Trigger SUMMARY_SALES ---------------- ① AFTER INSERT ON ORDER_LIST FOR EACH ROW DECLARE ---------------- ② o_date ORDER_LIST.order_date%TYPE; o_prod ORDER_LIST.product%TYPE; BEGIN o_date := :NEW.order_date; o_prod := :NEW.product; UPDATE SALES_PER_DATE ---------------- ③ SET qty = qty + :NEW.qty, amount = amount + :NEW.amount WHERE sale_date = o_date AND product = o_prod; if SQL%NOTFOUND then ---------------- ④ INSERT INTO SALES_PER_DATE VALUES(o_date, o_prod, :NEW.qty, :NEW.amount); end if; END; /
+[예제] Oracle CREATE OR REPLACE Trigger SUMMARY_SALES ---------------- ①  
+AFTER INSERT ON ORDER_LIST FOR EACH ROW DECLARE ---------------- ②  
+o_date ORDER_LIST.order_date%TYPE; o_prod ORDER_LIST.product%TYPE; BEGIN o_date := :NEW.order_date; o_prod := :NEW.product; UPDATE SALES_PER_DATE ---------------- ③  
+SET qty = qty + :NEW.qty, amount = amount + :NEW.amount WHERE sale_date = o_date AND product = o_prod; if SQL%NOTFOUND then ---------------- ④   
+INSERT INTO SALES_PER_DATE VALUES(o_date, o_prod, :NEW.qty, :NEW.amount); end if; END; /
 ```
 ① Trigger를 선언한다.CREATE OR REPLACE Trigger SUMMARY_SALES : Trigger 선언문AFTER INSERT : 레코드가 입력이 된 후 Trigger 발생 ON ORDER_LIST : ORDER_LIST 테이블에 Trigger 설정FOR EACH ROW : 각 ROW마다 Trigger 적용 ② o_date(주문일자), o_prod(주문상품) 값을 저장할 변수를 선언하고, 신규로 입력된 데이터를 저장한다. : NEW는 신규로 입력된 레코드의 정보를 가지고 있는 구조체 : OLD는 수정, 삭제되기 전의 레코드를 가지고 있는 구조체  ③ 먼저 입력된 주문 내역의 주문 일자와 주문 상품을 기준으로 SALES_PER_DATE 테이블에 업데이트한다. ④처리 결과가 SQL%NOTFOUND이면 해당 주문 일자의 주문 상품 실적이 존재하지 않으며, SALES_ PER_DATE 테이블에 새로운 집계 데이터를 입력한다.
 ![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_236.jpg)
 ```
-[예제] SQL Server CREATE Trigger dbo.SUMMARY_SALES ---------------- ① ON ORDER_LIST AFTER INSERT AS DECLARE @o_date DATETIME,@o_prod INT,@qty int, @amount int BEGIN SELECT @o_date=order_date, @o_prod=product, @qty=qty, @amount=amount FROM inserted ---------------- ② UPDATE SALES_PER_DATE ---------------- ③ SET qty = qty + @qty, amount = amount + @amount WHERE sale_date = @o_date AND product = @o_prod; IF @@ROWCOUNT=0 ---------------- ④ INSERT INTO SALES_PER_DATE VALUES(@o_date, @o_prod, @qty, @amount) END
+[예제] SQL Server CREATE Trigger dbo.SUMMARY_SALES ---------------- ①  
+ON ORDER_LIST AFTER INSERT AS DECLARE @o_date DATETIME,@o_prod INT,@qty int, @amount int BEGIN SELECT @o_date=order_date, @o_prod=product, @qty=qty, @amount=amount FROM inserted ---------------- ②  
+UPDATE SALES_PER_DATE ---------------- ③  
+SET qty = qty + @qty, amount = amount + @amount WHERE sale_date = @o_date AND product = @o_prod; IF @@ROWCOUNT=0 ---------------- ④    INSERT INTO SALES_PER_DATE VALUES(@o_date, @o_prod, @qty, @amount) END
 ```
 ① Trigger를 선언한다.CREATE Trigger SUMMARY_SALES : Trigger 선언문ON ORDER_LIST : ORDER_LIST 테이블에 Trigger 설정AFTER INSERT : 레코드가 입력이 된 후 Trigger 발생 ② o_date(주문일자), o_prod(주문상품), qty(수량), amount(금액) 값을 저장할 변수를 선언하고, 신규로 입력된 데이터를 저장한다.inserted는 신규로 입력된 레코드의 정보를 가지고 있는 구조체deleted는 수정, 삭제되기 전의 레코드를 가지고 있는 구조체. (표참조) ③ 먼저 입력된 주문 내역의 주문 일자와 주문 상품을 기준으로 SALES_PER_DATE 테이블에 업데이트한다. ④ 처리 결과가 0건이면 해당 주문 일자의 주문 상품 실적이 존재하지 않으며, SALES_PER_DATE 테이블에 새로운 집계 데이터를 입력한다.
 ![sql가이드](http://www.dbguide.net/publishing/img/knowledge/SQL_237.jpg)
